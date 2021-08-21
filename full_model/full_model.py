@@ -3,9 +3,9 @@ from vosk import Model, KaldiRecognizer
 import sys
 import subprocess
 
-import sys
-
-sys.path.insert(0, 'neuro-comma/src')
+import os
+ROOT_PATH = "/home/sidorenko/hack/minutki.online/full_model"
+sys.path.insert(0, os.path.join(ROOT_PATH, 'neuro-comma', 'src'))
 
 from pathlib import Path
 from neuro_comma.predict import RepunctPredictor
@@ -17,7 +17,7 @@ class FullModel():
 
     def __init__(self):
         print("Create vosk model...")
-        self.vosk_model_create(path_to_model="models/vosk-model-ru-0.10")
+        self.vosk_model_create(path_to_model=os.path.join(ROOT_PATH, "models", "vosk-model-ru-0.10"))
         print("Create punctuation model...")
         self.punct_model_create()
         # create ner model
@@ -55,7 +55,7 @@ class FullModel():
 
     def punct_model_create(self):
         self.punct_model = RepunctPredictor(model_name='repunct-model-new',
-                             models_root=Path('models'),
+                             models_root=Path(os.path.join(ROOT_PATH, 'models')),
                              model_weights='weights_ep6_9912.pt',
                              quantization=False,
                              device="cuda:1"
