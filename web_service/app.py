@@ -1,6 +1,6 @@
 """
 библиотеки: pip install streamlit numpy
-запуск приложения: STREAMLIT_SERVER_PORT=80 streamlit run app.py
+запуск приложения: STREAMLIT_SERVER_PORT=80 streamlit run app.py --server.maxUploadSize=1028
 """
 
 import streamlit as st
@@ -13,6 +13,7 @@ import subprocess as sp
 import shlex
 import json
  
+st.set_page_config(layout="wide")
 uploaded_files = st.file_uploader('Choose your video', type="MP4")
  
 if uploaded_files is not None:
@@ -27,13 +28,20 @@ if uploaded_files is not None:
         )
         output = normal.stdout
         obj = json.loads(output)
-        data = list()
+        # data = list()
         left, right = st.columns(2)
         with left:
-            st.header("Текст")
+            # st.header("Текст")
+            st.markdown("<h2 style='text-align: center;'>Текст</h2>", unsafe_allow_html=True)
             st.write(obj["text"])
-        for key, value in obj["cards"].items():
+        with right:
+            # st.header("   Поручения")
+            st.markdown("<h2 style='text-align: center;'>Поручения</h2>", unsafe_allow_html=True)
+            st.markdown("---")
+        for record in obj["cards"]:
             with right:
-                st.header(key)
-                st.write(value["text"])
+                # st.header(record['responsible']['text'])
+                st.write(record["assignment"]["text"])
+                st.caption(f"Ответственный: {record['responsible']['text']}")
+                st.caption(f"Срок: {record['date']['text']}")
                 st.markdown("---")
