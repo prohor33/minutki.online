@@ -9,6 +9,7 @@ sys.path.insert(0, 'neuro-comma/src')
 
 from pathlib import Path
 from neuro_comma.predict import RepunctPredictor
+from ner_model import NERModel
 
 
 
@@ -20,6 +21,7 @@ class FullModel():
         print("Create punctuation model...")
         self.punct_model_create()
         # create ner model
+        self.ner_model_create()
 
     def vosk_model_create(self, path_to_model):
         self.sample_rate=16000
@@ -63,7 +65,20 @@ class FullModel():
         return self.punct_model(text)
 
     def ner_model_create(self, ):
-        pass
+        self.ner_model = NERModel()
 
-    def ner_model_run(self, ):
-        pass
+    def ner_model_run(self, text):
+        return self.ner_model.run(text)
+
+    def run(self, path_to_file):
+        print("Runing ASR model...")
+        text = self.vosk_model_run(path_to_file)
+        print("Runing punctuation model...")
+        text_with_puncts = self.punct_model_run(text)
+        print("Runing NER model...")
+        header, tasks = self.ner_model_run(text_with_puncts)
+        return {
+            "cards": tasks,
+            "header": header,
+            "text": text_with_puncts
+        }
