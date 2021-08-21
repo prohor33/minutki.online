@@ -10,7 +10,7 @@ import shlex
 import json
  
 st.set_page_config(layout="wide")
-uploaded_files = st.file_uploader('Choose your video', type="MP4")
+uploaded_files = st.file_uploader(label='Выберите файл для загрузки', type="MP4")
  
 if uploaded_files is not None:
     video_bytes = uploaded_files.read()
