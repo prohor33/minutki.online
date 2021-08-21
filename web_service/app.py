@@ -8,6 +8,8 @@ import pandas as pd
 import subprocess as sp
 import shlex
 import json
+import os
+import base64
  
 st.set_page_config(layout="wide")
 uploaded_files = st.file_uploader(label='Выберите файл для загрузки', type="MP4")
@@ -24,6 +26,18 @@ if uploaded_files is not None:
         )
         output = normal.stdout
         obj = json.loads(output)
+        print(os.path.abspath("."))
+        print(os.listdir("."))
+        files = os.listdir("./report")
+       
+        if files:
+            with open(os.path.join("./report", files[0]), "rb") as fp:
+                bytes = fp.read()
+                b64 = base64.b64encode(bytes).decode()
+                href = f'<a href="data:base64,{b64}" download="{files[0]}">Скачать отчет в формате Word</a>'
+                st.markdown(href, unsafe_allow_html=True)
+
+
         left, right = st.columns(2)
         with left:
             st.markdown("<h2 style='text-align: center;'>Текст</h2>", unsafe_allow_html=True)
