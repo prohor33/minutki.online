@@ -1,5 +1,6 @@
 <img width="960" alt="Презентация2" src="https://user-images.githubusercontent.com/5472900/130338081-fb0639c7-7e2f-4cbc-8bb3-2940b2e5bc88.png">
 
+Сделано за 1 сутки командой SberSquad в рамках хакатона LeadersOfDigital.
 
 ### Install extraction dependencies
 
